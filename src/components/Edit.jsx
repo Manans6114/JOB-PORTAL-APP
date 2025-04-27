@@ -21,7 +21,7 @@ const Edit = () => {
 
   useEffect(() => {
     const fetchInitialPosts = async (id) => {  
-      const response = await axios.get(`http://34.47.195.245:8080/jobPost/${id}`);
+      const response = await axios.get(`https://omaha-skin-usd-lists.trycloudflare.com/jobPost/${id}`);
       console.log(response.data);
       setForm(response.data);
     };
@@ -31,7 +31,7 @@ const Edit = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios      
-      .put("http://34.47.195.245:8080/jobPost", form)
+      .put(" https://omaha-skin-usd-lists.trycloudflare.com/jobPost", form)
       .then((resp) => {
         console.log(resp.data);
       })
