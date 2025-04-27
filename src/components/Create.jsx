@@ -38,7 +38,7 @@ const Create = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(" https://omaha-skin-usd-lists.trycloudflare.com/jobPost", form)
+      .post("https://individuals-enemy-recent-symptoms.trycloudflare.com/jobPost", form)
       .then((resp) => {
         console.log(resp.data);
       })

@@ -21,7 +21,7 @@ const Edit = () => {
 
   useEffect(() => {
     const fetchInitialPosts = async (id) => {  
-      const response = await axios.get(`https://omaha-skin-usd-lists.trycloudflare.com/jobPost/${id}`);
+      const response = await axios.get(`https://individuals-enemy-recent-symptoms.trycloudflare.com/jobPost/${id}`);
       console.log(response.data);
       setForm(response.data);
     };
@@ -31,7 +31,7 @@ const Edit = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios      
-      .put(" https://omaha-skin-usd-lists.trycloudflare.com/jobPost", form)
+      .put("https://individuals-enemy-recent-symptoms.trycloudflare.com/jobPost", form)
       .then((resp) => {
         console.log(resp.data);
       })
