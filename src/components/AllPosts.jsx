@@ -27,11 +27,11 @@ const AllPosts = () => { // Fixed component name
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await axios.get(`http://localhost:8080/jobPost/keyword/${query}`); // Fixed template literal
+      const response = await axios.get(`http://34.47.195.245:8080/jobPost/keyword/${query}`); // Fixed template literal
       setPost(response.data);
     };
     const fetchInitialPosts = async () => {
-      const response = await axios.get("http://localhost:8080/jobPost"); // Fixed URL
+      const response = await axios.get("http://34.47.195.245:8080/jobPost"); // Fixed URL
       setPost(response.data);
     }
     fetchInitialPosts();
@@ -41,7 +41,7 @@ const AllPosts = () => { // Fixed component name
 
   const handleDelete = (id) => {
     async function deletePost() {
-      await axios.delete(`http://localhost:8080/jobPost/${id}`); // Fixed template literal
+      await axios.delete(`http://34.47.195.245:8080/jobPost/${id}`); // Fixed template literal
     }
     deletePost();
     window.location.reload();
