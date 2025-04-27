@@ -10,7 +10,7 @@ import com.SpringRestProject.Rest.service.JobService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class JobRestController {
 
     @Autowired
