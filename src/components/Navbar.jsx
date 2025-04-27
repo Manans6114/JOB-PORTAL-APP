@@ -38,7 +38,7 @@ const Navbar = () => {
               <Box sx={{ m: 0.5, mx: 'auto', width: 80 }}>
                 <Button 
                   variant="outlined" 
-                  href='http://localhost:3000'
+                  href='/'
                   sx={{ 
                     color: darkMode ? 'var(--button-text)' : 'inherit',
                     borderColor: darkMode ? 'var(--button-border)' : 'inherit'
@@ -50,7 +50,7 @@ const Navbar = () => {
               <Box sx={{ m: 0.5, mx: 'auto', width: 100 }}>
                 <Button 
                   variant="outlined" 
-                  href='http://localhost:3000/create'
+                  href='/create'
                   sx={{ 
                     color: darkMode ? 'var(--button-text)' : 'inherit',
                     borderColor: darkMode ? 'var(--button-border)' : 'inherit'
@@ -62,7 +62,7 @@ const Navbar = () => {
               <Box sx={{ m: 0.5, mx: 'auto', width: 180 }}>
                 <Button 
                   variant="outlined" 
-                  href='https://telusko.com/'
+                  href='https://github.com/'
                   sx={{ 
                     color: darkMode ? 'var(--button-text)' : 'inherit',
                     borderColor: darkMode ? 'var(--button-border)' : 'inherit'
