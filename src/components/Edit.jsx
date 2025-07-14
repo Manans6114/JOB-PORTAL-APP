@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Typography, TextField, Button, Paper, Box } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ThemeContext } from '../ThemeContext';
+import { ThemeContext } from "../ThemeContext";
 
 const initial = {
   postId: "",
@@ -20,8 +20,8 @@ const Edit = () => {
   const { darkMode } = useContext(ThemeContext);
 
   useEffect(() => {
-    const fetchInitialPosts = async (id) => {  
-      const response = await axios.get(`https://individuals-enemy-recent-symptoms.trycloudflare.com/jobPost/${id}`);
+    const fetchInitialPosts = async (id) => {
+      const response = await axios.get(`http://localhost:8080/jobPost/${id}`);
       console.log(response.data);
       setForm(response.data);
     };
@@ -30,54 +30,55 @@ const Edit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios      
-      .put("https://individuals-enemy-recent-symptoms.trycloudflare.com/jobPost", form)
+    axios
+      .put("http://localhost:8080/jobPost", form)
       .then((resp) => {
         console.log(resp.data);
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
       });
-    navigate('/');
   };
 
   const handleChange = (e) => {
-    setForm({ ...form, postTechStack: [...form.postTechStack, e.target.value] });
+    const { value, checked } = e.target;
+    if (checked) {
+      setForm((prev) => ({
+        ...prev,
+        postTechStack: [...prev.postTechStack, value],
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        postTechStack: prev.postTechStack.filter((skill) => skill !== value),
+      }));
+    }
   };
 
   const skillSet = [
-    {
-      name: "Javascript",
-    },
-    {
-      name: "Java",
-    },
-    {
-      name: "Python",
-    },
-    {
-      name: "Django",
-    },
-    {
-      name: "Rust",
-    },
+    { name: "Javascript" },
+    { name: "Java" },
+    { name: "Python" },
+    { name: "Django" },
+    { name: "Rust" },
   ];
 
   return (
-    <Paper 
-      sx={{ 
+    <Paper
+      sx={{
         padding: "1%",
-        backgroundColor: darkMode ? 'var(--bg-color)' : 'inherit',
-        color: darkMode ? 'var(--text-color)' : 'inherit'
-      }} 
+        backgroundColor: darkMode ? "var(--bg-color)" : "inherit",
+        color: darkMode ? "var(--text-color)" : "inherit",
+      }}
       elevation={0}
     >
-      <Typography 
-        sx={{ 
+      <Typography
+        sx={{
           margin: "3% auto",
-          color: darkMode ? 'var(--text-color)' : 'inherit'
-        }} 
-        align="center" 
+          color: darkMode ? "var(--text-color)" : "inherit",
+        }}
+        align="center"
         variant="h5"
       >
         Edit Job Post
@@ -91,51 +92,16 @@ const Edit = () => {
           }}
         >
           <TextField
-            min="0"
             type="number"
-            sx={{ 
-              width: "50%", 
-              margin: "2% auto",
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: darkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.23)'
-                },
-                "&:hover fieldset": {
-                  borderColor: darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.23)'
-                }
-              },
-              "& .MuiInputLabel-root": {
-                color: darkMode ? 'var(--text-color)' : 'inherit'
-              },
-              "& .MuiOutlinedInput-input": {
-                color: darkMode ? 'var(--text-color)' : 'inherit'
-              }
-            }}
+            sx={textFieldStyles(darkMode)}
             onChange={(e) => setForm({ ...form, postId: e.target.value })}
             label="Enter your Post ID"
             variant="outlined"
             value={form.postId}
           />
           <TextField
-            type="string"
-            sx={{ 
-              width: "50%", 
-              margin: "2% auto",
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: darkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.23)'
-                },
-                "&:hover fieldset": {
-                  borderColor: darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.23)'
-                }
-              },
-              "& .MuiInputLabel-root": {
-                color: darkMode ? 'var(--text-color)' : 'inherit'
-              },
-              "& .MuiOutlinedInput-input": {
-                color: darkMode ? 'var(--text-color)' : 'inherit'
-              }
-            }}
+            type="text"
+            sx={textFieldStyles(darkMode)}
             required
             onChange={(e) => setForm({ ...form, postProfile: e.target.value })}
             label="Job-Profile"
@@ -143,26 +109,8 @@ const Edit = () => {
             value={form.postProfile}
           />
           <TextField
-            min="0"
             type="number"
-            sx={{ 
-              width: "50%", 
-              margin: "2% auto",
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: darkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.23)'
-                },
-                "&:hover fieldset": {
-                  borderColor: darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.23)'
-                }
-              },
-              "& .MuiInputLabel-root": {
-                color: darkMode ? 'var(--text-color)' : 'inherit'
-              },
-              "& .MuiOutlinedInput-input": {
-                color: darkMode ? 'var(--text-color)' : 'inherit'
-              }
-            }}
+            sx={textFieldStyles(darkMode)}
             required
             onChange={(e) =>
               setForm({ ...form, reqExperience: e.target.value })
@@ -172,25 +120,8 @@ const Edit = () => {
             value={form.reqExperience}
           />
           <TextField
-            type="string"
-            sx={{ 
-              width: "50%", 
-              margin: "2% auto",
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: darkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.23)'
-                },
-                "&:hover fieldset": {
-                  borderColor: darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.23)'
-                }
-              },
-              "& .MuiInputLabel-root": {
-                color: darkMode ? 'var(--text-color)' : 'inherit'
-              },
-              "& .MuiOutlinedInput-input": {
-                color: darkMode ? 'var(--text-color)' : 'inherit'
-              }
-            }}
+            type="text"
+            sx={textFieldStyles(darkMode)}
             required
             multiline
             rows={4}
@@ -199,36 +130,37 @@ const Edit = () => {
             variant="outlined"
             value={form.postDesc}
           />
-          <Box sx={{ margin: "1% auto", color: darkMode ? 'var(--text-color)' : 'inherit' }}>
+          <Box
+            sx={{
+              margin: "1% auto",
+              color: darkMode ? "var(--text-color)" : "inherit",
+            }}
+          >
             <h3>Please mention required skills</h3>
             <ul>
               {skillSet.map(({ name }, index) => {
+                const checkboxId = `custom-checkbox-${index}`;
                 return (
                   <li key={index}>
-                    <div>
-                      <div>
-                        <input
-                          type="checkbox"
-                          id={`custom-checkbox-${index}`}
-                          name={name}
-                          value={name}
-                          onChange={handleChange}
-                        />
-                        <label htmlFor={`custom-checkbox-${index}`}>
-                          {name}
-                        </label>
-                      </div>
-                    </div>
+                    <input
+                      type="checkbox"
+                      id={checkboxId}
+                      name={name}
+                      value={name}
+                      checked={form.postTechStack.includes(name)}
+                      onChange={handleChange}
+                    />
+                    <label htmlFor={checkboxId}>{name}</label>
                   </li>
                 );
               })}
             </ul>
           </Box>
           <Button
-            sx={{ 
-              width: "50%", 
+            sx={{
+              width: "50%",
               margin: "2% auto",
-              backgroundColor: darkMode ? '#1976d2' : undefined
+              backgroundColor: darkMode ? "#1976d2" : undefined,
             }}
             variant="contained"
             type="submit"
@@ -240,5 +172,24 @@ const Edit = () => {
     </Paper>
   );
 };
+
+const textFieldStyles = (darkMode) => ({
+  width: "50%",
+  margin: "2% auto",
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: darkMode ? "rgba(255, 255, 255, 0.3)" : "rgba(0, 0, 0, 0.23)",
+    },
+    "&:hover fieldset": {
+      borderColor: darkMode ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.23)",
+    },
+  },
+  "& .MuiInputLabel-root": {
+    color: darkMode ? "var(--text-color)" : "inherit",
+  },
+  "& .MuiOutlinedInput-input": {
+    color: darkMode ? "var(--text-color)" : "inherit",
+  },
+});
 
 export default Edit;

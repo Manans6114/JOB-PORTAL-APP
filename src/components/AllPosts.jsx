@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import SearchIcon from '@mui/icons-material/Search'; // Fixed SearchIcon import
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
   Card,
@@ -15,25 +15,37 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../ThemeContext';
 
-const AllPosts = () => { // Fixed component name
+const AllPosts = () => {
   const [query, setQuery] = useState("");
   const [post, setPost] = useState(null);
   const navigate = useNavigate();
   const { darkMode } = useContext(ThemeContext);
 
+  const baseURL = "http://localhost:8080";
+
   const handleEdit = (id) => {
-    navigate("/edit", {state: {id}});
-  }
+    navigate("/edit", { state: { id } });
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await axios.get(`https://individuals-enemy-recent-symptoms.trycloudflare.com/jobPost/keyword/${query}`); // Fixed template literal
-      setPost(response.data);
+      try {
+        const response = await axios.get(`${baseURL}/jobPost/keyword/${query}`);
+        setPost(response.data);
+      } catch (error) {
+        console.error("Error fetching filtered posts:", error);
+      }
     };
+
     const fetchInitialPosts = async () => {
-      const response = await axios.get("https://individuals-enemy-recent-symptoms.trycloudflare.com/jobPost"); // Fixed URL
-      setPost(response.data);
-    }
+      try {
+        const response = await axios.get(`${baseURL}/jobPost`);
+        setPost(response.data);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
     fetchInitialPosts();
     if (query.length === 0) fetchInitialPosts();
     if (query.length > 2) fetchPosts();
@@ -41,11 +53,15 @@ const AllPosts = () => { // Fixed component name
 
   const handleDelete = (id) => {
     async function deletePost() {
-      await axios.delete(`https://individuals-enemy-recent-symptoms.trycloudflare.com/jobPost/${id}`); // Fixed template literal
+      try {
+        await axios.delete(`${baseURL}/jobPost/${id}`);
+        window.location.reload();
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
     }
     deletePost();
-    window.location.reload();
-  }
+  };
 
   return (
     <>
@@ -59,14 +75,14 @@ const AllPosts = () => { // Fixed component name
                     <SearchIcon />
                   </InputAdornment>
                 ),
-                style: { 
+                style: {
                   color: darkMode ? 'var(--text-color)' : 'inherit',
                   backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.05)' : 'inherit'
                 }
               }}
               placeholder="Search..."
-              sx={{ 
-                width: "75%", 
+              sx={{
+                width: "75%",
                 padding: "2% auto",
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
@@ -89,23 +105,23 @@ const AllPosts = () => { // Fixed component name
           post.map((p) => {
             return (
               <Grid key={p.postId} item xs={12} md={6} lg={4}>
-                <Card sx={{ 
-                  padding: "3%", 
-                  overflow: "hidden", 
-                  width: "84%", 
+                <Card sx={{
+                  padding: "3%",
+                  overflow: "hidden",
+                  width: "84%",
                   backgroundColor: darkMode ? 'var(--card-bg)' : '#ADD8E6',
                   color: darkMode ? 'var(--text-color)' : 'inherit'
                 }}>
-                  <Typography        
+                  <Typography
                     variant="h5"
                     sx={{ fontSize: "2rem", fontWeight: "600", fontFamily: "sans-serif" }}
                   >
                     {p.postProfile}
                   </Typography>
-                  <Typography sx={{ 
-                    color: darkMode ? 'rgba(255, 255, 255, 0.7)' : "#585858", 
-                    marginTop: "2%", 
-                    fontFamily: "cursive" 
+                  <Typography sx={{
+                    color: darkMode ? 'rgba(255, 255, 255, 0.7)' : "#585858",
+                    marginTop: "2%",
+                    fontFamily: "cursive"
                   }} variant="body1">
                     Description: {p.postDesc}
                   </Typography>
@@ -119,16 +135,15 @@ const AllPosts = () => { // Fixed component name
                     return (
                       <Typography variant="body1" gutterBottom key={i}>
                         {s} .
-                        { }
                       </Typography>
                     );
                   })}
-                  <DeleteIcon 
-                    onClick={() => handleDelete(p.postId)} 
+                  <DeleteIcon
+                    onClick={() => handleDelete(p.postId)}
                     sx={{ cursor: 'pointer', marginRight: '8px', color: darkMode ? 'var(--text-color)' : 'inherit' }}
                   />
-                  <EditIcon 
-                    onClick={() => handleEdit(p.postId)} 
+                  <EditIcon
+                    onClick={() => handleEdit(p.postId)}
                     sx={{ cursor: 'pointer', color: darkMode ? 'var(--text-color)' : 'inherit' }}
                   />
                 </Card>
@@ -138,6 +153,6 @@ const AllPosts = () => { // Fixed component name
       </Grid>
     </>
   );
-}
+};
 
-export default AllPosts; // Fixed export name
+export default AllPosts;
